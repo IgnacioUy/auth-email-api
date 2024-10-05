@@ -11,7 +11,7 @@ const app = express();
 
 // Habilitar CORS para permitir solicitudes desde visiona.pe, wecast.cl y localhost
 app.use(cors({
-  origin: ['https://visiona.pe', 'https://wecast.cl', 'https://www.visiona.pe', 'https://www.wecast.cl', 'http://localhost:3000'], // Asegúrate de que estos dominios están correctos
+  origin: ['https://visiona.pe', 'https://wecast.cl', 'http://localhost:3000'], // Asegúrate de que estos dominios están correctos
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true, // Permitir credenciales
