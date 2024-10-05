@@ -11,11 +11,10 @@ const app = express();
 
 // Habilitar CORS para permitir solicitudes desde visiona.pe, wecast.cl y localhost
 app.use(cors({
-  origin: '*', // Permitir todos los orígenes
+  origin: ['https://visiona.pe', 'https://wecast.cl', 'https://www.visiona.pe', 'https://www.wecast.cl', 'http://localhost:3000'], // Asegúrate de que estos dominios están correctos
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-
 
 // Limitar el tamaño de la solicitud a 10KB
 app.use(express.json({ limit: '10kb' }));
