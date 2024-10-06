@@ -43,6 +43,7 @@ app.post('/api/send-auth-email', async (req, res) => {
   console.log(`País recibido: ${pais}`);
 
   const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' }); // El token expira en 1 hora
+  console.log("Token generado:", token); // Log para verificar el token
   const redirectUrl = `${pais.toLowerCase() === "chile" ? 
     (isLocalhost ? "http://localhost:3000/admin" : "https://wecast.cl/admin") : 
     (isLocalhost ? "http://localhost:3000/admin" : "https://visiona.pe/admin")}?email=${email}&token=${token}`;
