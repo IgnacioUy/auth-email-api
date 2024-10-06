@@ -11,7 +11,7 @@ const app = express();
 
 // Habilitar CORS para permitir solicitudes desde visiona.pe, wecast.cl y localhost
 app.use(cors({
-  origin: ['https://visiona.pe', 'https://wecast.cl', 'http://localhost:3000'], // Asegúrate de que estos dominios están correctos
+  origin: ['https://visiona.pe', 'https://wecast.cl', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true, // Permitir credenciales
@@ -38,14 +38,15 @@ app.post('/api/send-auth-email', async (req, res) => {
     return res.status(400).json({ success: false, message: 'País no soportado' });
   }
 
+  // Configurar la URL de redirección basada en el entorno
+  const isLocalhost = process.env.NODE_ENV === 'development';
+  redirectUrl = `${pais.toLowerCase() === "chile" ? (isLocalhost ? "http://localhost:3000/admin" : "https://wecast.cl/admin") : (isLocalhost ? "http://localhost:3000/admin" : "https://visiona.pe/admin")}?email=${email}&token=${token}`;
+
   // Log para verificar el remitente que se está usando
   console.log(`Enviando desde: ${senderEmail}, País: ${pais}`);
 
   // Generar un token usando jsonwebtoken
   const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' }); // El token expira en 1 hora
-
-  // Incluir el token en el enlace de redirección
-  redirectUrl = `${pais.toLowerCase() === "chile" ? "https://wecast.cl/admin" : "https://visiona.pe/admin"}?email=${email}&token=${token}`;
 
   // Definir el contenido del correo
   const msg = {
