@@ -39,13 +39,18 @@ app.post('/api/send-auth-email', async (req, res) => {
 
   // Configurar la URL de redirección basada en el entorno
   const isLocalhost = process.env.NODE_ENV === 'development';
-  redirectUrl = `${pais.toLowerCase() === "chile" ? (isLocalhost ? "http://localhost:3000/admin" : "https://wecast.cl/admin") : (isLocalhost ? "http://localhost:3000/admin" : "https://visiona.pe/admin")}?email=${email}&token=${token}`;
+  console.log(`Entorno: ${isLocalhost ? 'localhost' : 'producción'}`);
+  console.log(`País recibido: ${pais}`);
+
+  const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' }); // El token expira en 1 hora
+  const redirectUrl = `${pais.toLowerCase() === "chile" ? 
+    (isLocalhost ? "http://localhost:3000/admin" : "https://wecast.cl/admin") : 
+    (isLocalhost ? "http://localhost:3000/admin" : "https://visiona.pe/admin")}?email=${email}&token=${token}`;
+
+  console.log(`Redirect URL: ${redirectUrl}`);
 
   // Log para verificar el remitente que se está usando
   console.log(`Enviando desde: ${senderEmail}, País: ${pais}`);
-
-  // Generar un token usando jsonwebtoken
-  const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' }); // El token expira en 1 hora
 
   // Definir el contenido del correo
   const msg = {
@@ -58,7 +63,7 @@ app.post('/api/send-auth-email', async (req, res) => {
     text: `Hola!\n\nPor favor haz click en el siguiente enlace para iniciar sesión: ${redirectUrl}`,
     html: `<p>Hola,</p><p>Haz click en el siguiente enlace para iniciar sesión:</p><a href="${redirectUrl}">Iniciar sesión</a>`,
   };
-  
+
   try {
     // Enviar el correo usando SendGrid
     await sendgrid.send(msg);
