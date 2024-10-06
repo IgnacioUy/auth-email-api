@@ -39,14 +39,21 @@ app.post('/api/send-auth-email', async (req, res) => {
   }
 
   // Configurar la URL de redirección basada en el entorno
-  const isLocalhost = process.env.NODE_ENV === 'development';
-  redirectUrl = `${pais.toLowerCase() === "chile" ? (isLocalhost ? "http://localhost:3000/admin" : "https://wecast.cl/admin") : (isLocalhost ? "http://localhost:3000/admin" : "https://visiona.pe/admin")}?email=${email}&token=${token}`;
-
-  // Log para verificar el remitente que se está usando
-  console.log(`Enviando desde: ${senderEmail}, País: ${pais}`);
+  const isLocalhost = process.env.NODE_ENV === 'development' || 
+                      (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test');
+  
+  redirectUrl = `${pais.toLowerCase() === "chile" ? 
+    (isLocalhost ? "http://localhost:3000/admin" : "https://wecast.cl/admin") : 
+    (isLocalhost ? "http://localhost:3000/admin" : "https://visiona.pe/admin")}?email=${email}`;
 
   // Generar un token usando jsonwebtoken
   const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' }); // El token expira en 1 hora
+
+  // Incluir el token en el enlace de redirección
+  redirectUrl += `&token=${token}`;
+
+  // Log para verificar el remitente que se está usando
+  console.log(`Enviando desde: ${senderEmail}, País: ${pais}`);
 
   // Definir el contenido del correo
   const msg = {
