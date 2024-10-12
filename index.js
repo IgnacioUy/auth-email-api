@@ -2,7 +2,6 @@ require('dotenv').config(); // Cargar variables de entorno del archivo .env
 const express = require('express');
 const cors = require('cors'); // Importar cors
 const sendgrid = require('@sendgrid/mail');
-// const jwt = require('jsonwebtoken'); // Importar jsonwebtoken para generar el token
 
 // Configurar la API Key de SendGrid
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
@@ -42,16 +41,9 @@ app.post('/api/send-auth-email', async (req, res) => {
   console.log(`Entorno: ${isLocalhost ? 'localhost' : 'producción'}`);
   console.log(`País recibido: ${pais}`);
 
-  /* 
-  const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' }); // El token expira en 1 hora
-  console.log("Token generado:", token); // Log para verificar el token
   const redirectUrl = `${pais.toLowerCase() === "chile" ? 
     (isLocalhost ? "http://localhost:3000/admin" : "https://wecast.cl/admin") : 
-    (isLocalhost ? "http://localhost:3000/admin" : "https://visiona.pe/admin")}?email=${email}&token=${token}`;
-  */
-  const redirectUrl = `${pais.toLowerCase() === "chile" ? 
-    (isLocalhost ? "http://localhost:3000/admin" : "https://wecast.cl/admin") : 
-    (isLocalhost ? "http://localhost:3000/admin" : "https://visiona.pe/admin")}?email=${email}`; // Sin el token
+    (isLocalhost ? "http://localhost:3000/admin" : "https://visiona.pe/admin")}?email=${email}`;
 
   console.log(`Redirect URL: ${redirectUrl}`);
 
