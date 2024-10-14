@@ -25,6 +25,10 @@ app.use(
 // Limitar el tamaño de la solicitud a 10KB
 app.use(express.json({ limit: "10kb" }));
 
+app.get("/api/test", function (req, res) {
+  res.send("test de test");
+});
+
 // Endpoint para enviar el correo de autenticación
 app.post("/api/send-auth-email", async (req, res) => {
   const { email, pais } = req.body;
@@ -86,10 +90,6 @@ app.post("/api/send-auth-email", async (req, res) => {
     console.error("Error enviando correo:", error);
     res.status(500).json({ success: false, message: "Error enviando correo" });
   }
-});
-
-app.get("/api/test", function (req, res) {
-  res.send("test de test");
 });
 
 // Iniciar el servidor en el puerto 3000 o el puerto disponible
