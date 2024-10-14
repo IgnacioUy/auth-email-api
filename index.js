@@ -8,26 +8,22 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
 const app = express();
 
-// // Habilitar CORS para permitir solicitudes desde visiona.pe, wecast.cl y localhost
-// app.use(
-//   cors({
-//     origin: [
-//       "https://visiona.pe",
-//       "https://wecast.cl",
-//       "http://localhost:3000",
-//     ],
-//     methods: ["GET", "POST", "OPTIONS"],
-//     allowedHeaders: ["Content-Type", "Authorization"],
-//     credentials: true, // Permitir credenciales
-//   })
-// );
+// Habilitar CORS para permitir solicitudes desde visiona.pe, wecast.cl y localhost
+app.use(
+  cors({
+    origin: [
+      "https://visiona.pe",
+      "https://wecast.cl",
+      "http://localhost:3000",
+    ],
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // Permitir credenciales
+  })
+);
 
-// // Limitar el tamaño de la solicitud a 10KB
-// app.use(express.json({ limit: "10kb" }));
-
-app.get("/algo", function (req, res) {
-  res.send("test de test");
-});
+// Limitar el tamaño de la solicitud a 10KB
+app.use(express.json({ limit: "10kb" }));
 
 // Endpoint para enviar el correo de autenticación
 app.post("/api/send-auth-email", async (req, res) => {
