@@ -25,10 +25,6 @@ app.use(
 // Limitar el tamaño de la solicitud a 10KB
 app.use(express.json({ limit: "10kb" }));
 
-app.get("/", function (req, res) {
-  res.send("GET request to the homepage");
-});
-
 // Endpoint para enviar el correo de autenticación
 app.post("/api/send-auth-email", async (req, res) => {
   const { email, pais } = req.body;
