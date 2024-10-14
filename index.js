@@ -14,6 +14,7 @@ app.use(
     origin: [
       "https://visiona.pe",
       "https://wecast.cl",
+      "https://screenmedia.com.uy",
       "http://localhost:3000",
     ],
     methods: ["GET", "POST", "OPTIONS"],
@@ -27,9 +28,10 @@ app.use(express.json({ limit: "10kb" }));
 
 // Endpoint para enviar el correo de autenticación
 app.post("/api/send-auth-email", async (req, res) => {
-  const { email, pais } = req.body;
+  const { email, pais, isLocalhost } = req.body;
 
   console.log(`Pais recibido: ${pais}`); // Log para verificar el valor de pais
+  console.log(`Es Debug: ${isLocalhost}`); // Log para verificar el valor de pais
 
   // Definir el remitente según el país
   let senderEmail;
@@ -43,11 +45,6 @@ app.post("/api/send-auth-email", async (req, res) => {
       .status(400)
       .json({ success: false, message: "País no soportado" });
   }
-
-  // Configurar la URL de redirección basada en el entorno
-  const isLocalhost = process.env.NODE_ENV === "development";
-  console.log(`Entorno: ${isLocalhost ? "localhost" : "producción"}`);
-  console.log(`País recibido: ${pais}`);
 
   const redirectUrl = `${
     pais.toLowerCase() === "chile"
