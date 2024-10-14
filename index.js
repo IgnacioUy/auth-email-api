@@ -59,7 +59,7 @@ app.post('/api/send-auth-email', async (req, res) => {
     },
     subject: 'Autenticación de tu cuenta',
     text: `Hola!\n\nPor favor haz click en el siguiente enlace para iniciar sesión: ${redirectUrl}`,
-    html: `<p>Hola,</p><p>Haz click en el siguiente enlace para iniciar sesión:</p><a href="${redirectUrl}">Iniciar sesión</a>`,
+    html: `<p>Hola,</p><p>Haz click en el siguiente enlace para iniciar sesión:</p><a href="${redirectUrl}">Iniciar sesión</a>.`,
   };
 
   try {
