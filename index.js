@@ -25,7 +25,7 @@ app.use(
 // Limitar el tamaño de la solicitud a 10KB
 app.use(express.json({ limit: "10kb" }));
 
-app.get("/api/test", function (req, res) {
+app.get("/algo", function (req, res) {
   res.send("test de test");
 });
 
