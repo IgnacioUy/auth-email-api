@@ -8,6 +8,8 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
 const app = express();
 
+app.use(express.static("public"));
+
 // Habilitar CORS para permitir solicitudes desde visiona.pe, wecast.cl y localhost
 app.use(
   cors({
